@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-class CustomText extends StatelessWidget {
+class PostText extends StatelessWidget {
   final String text;
   final double fontSize;
   final Color textColor;
@@ -10,8 +10,8 @@ class CustomText extends StatelessWidget {
   final VoidCallback? onSuffixPressed;
   final Function(String)? onUserTagPressed;
 
-  CustomText({
-    Key? key,
+  const PostText({
+    super.key,
     required this.text,
     this.fontSize = 14,
     this.textColor = Colors.black,
@@ -19,7 +19,7 @@ class CustomText extends StatelessWidget {
     this.showAllText = false,
     this.onSuffixPressed,
     this.onUserTagPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

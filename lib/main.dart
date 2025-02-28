@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertagger/fluttertagger.dart';
-import 'package:mentionable_text_field/custom_text.dart';
-import 'package:mentionable_text_field/post.dart';
-import 'package:mentionable_text_field/user.dart';
+import 'package:mentionable_text_field/model/post.dart';
+import 'package:mentionable_text_field/model/user.dart';
+import 'package:mentionable_text_field/post/post_list_view.dart';
+import 'package:mentionable_text_field/search_result_view.dart';
 
 void main() {
   runApp(const MyApp());
@@ -50,6 +51,7 @@ class _MentionScreenState extends State<MentionScreen> {
     }
   }
 
+  // メンションする人を選んだ際の関数
   void _onUserSelected(User user) {
     _controller.addTag(
       id: user.id,
@@ -60,6 +62,7 @@ class _MentionScreenState extends State<MentionScreen> {
     });
   }
 
+  // テキストフィールドを送信した際の関数
   void _onSubmit(String caption) {
     if (caption.isEmpty) return;
 
@@ -87,36 +90,13 @@ class _MentionScreenState extends State<MentionScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(
-                child: ListView.builder(
-                  itemBuilder: (context, index) {
-                    if (posts.isEmpty) {
-                      return Center(
-                        child: Text('No users'),
-                      );
-                    }
-                    return Card(
-                        child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            posts[index].poster.userName,
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          CustomText(text: posts[index].caption),
-                        ],
-                      ),
-                    ));
-                  },
-                  itemCount: posts.length,
-                ),
+              // 投稿リスト
+              PostListView(
+                posts: posts,
               ),
+              // Flutter Taggerライブラリ
               FlutterTagger(
+                overlayHeight: 250,
                 controller: _controller,
                 onSearch: _onSearch,
                 triggerCharacterAndStyles: const {
@@ -147,37 +127,5 @@ class _MentionScreenState extends State<MentionScreen> {
         ),
       ),
     );
-  }
-}
-
-class SearchResultView extends StatelessWidget {
-  final List<User> searchResults;
-  final Function(User) onUserSelected;
-
-  const SearchResultView({
-    super.key,
-    required this.searchResults,
-    required this.onUserSelected,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return searchResults.isNotEmpty
-        ? Container(
-            color: Colors.white,
-            child: ListView(
-              shrinkWrap: true,
-              children: searchResults
-                  .map(
-                    (user) => ListTile(
-                      title: Text('@${user.userName}'),
-                      subtitle: Text(user.id),
-                      onTap: () => onUserSelected(user),
-                    ),
-                  )
-                  .toList(),
-            ),
-          )
-        : SizedBox.shrink();
   }
 }

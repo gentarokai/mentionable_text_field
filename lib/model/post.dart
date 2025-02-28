@@ -1,4 +1,4 @@
-import 'package:mentionable_text_field/user.dart';
+import 'package:mentionable_text_field/model/user.dart';
 
 class Post {
   final String caption;
