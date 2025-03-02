@@ -31,6 +31,7 @@ class MentionScreen extends StatefulWidget {
 class _MentionScreenState extends State<MentionScreen> {
   final _controller = FlutterTaggerController();
   final FocusNode _focusNode = FocusNode();
+  // メンション可能なユーザーのリスト
   final List<User> users = [
     User(id: '1', userName: 'Alice'),
     User(id: '2', userName: 'Bob'),
@@ -40,6 +41,7 @@ class _MentionScreenState extends State<MentionScreen> {
   List<User> searchResults = [];
   List<Post> posts = [];
 
+  // 検索関数
   void _onSearch(String query, String triggerCharacter) {
     if (triggerCharacter == '@') {
       setState(() {
